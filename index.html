@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Burning Candle with Woman Silhouette</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #0a0a14;
+            color: #e6d6b8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        header {
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #ffcc88;
+            text-shadow: 0 0 10px rgba(255, 204, 136, 0.5);
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            font-style: italic;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .scene-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            margin: 30px auto;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 0 40px rgba(139, 69, 19, 0.3);
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0a0a14 100%);
+        }
+        
+        .silhouette {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 600"><path fill="%23111122" d="M200,550 C100,550 50,450 50,350 C50,250 100,150 200,150 C300,150 350,250 350,350 C350,450 300,550 200,550 Z"/><path fill="%23111122" d="M200,150 C180,100 150,50 200,0 C250,50 220,100 200,150 Z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center bottom;
+            background-size: contain;
+            opacity: 0.7;
+            z-index: 1;
+        }
+        
+        .candle-container {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            width: 80px;
+            height: 300px;
+        }
+        
+        .candle {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .candle-body {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 250px;
+            background: linear-gradient(to right, #d4a76a 0%, #f5e8c8 30%, #d4a76a 70%, #b5834f 100%);
+            border-radius: 25px 25px 10px 10px;
+            box-shadow: 
+                inset 5px 0 10px rgba(180, 130, 80, 0.6),
+                inset -5px 0 10px rgba(180, 130, 80, 0.6),
+                0 0 20px rgba(139, 69, 19, 0.4);
+        }
+        
+        .candle-wick {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 20px;
+            background-color: #222;
+            border-radius: 2px;
+            z-index: 2;
+        }
+        
+        .flame-container {
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 80px;
+            z-index: 4;
+        }
+        
+        .flame {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 70px;
+            background: linear-gradient(to top, rgba(255, 100, 0, 0) 0%, #ff6600 40%, #ffcc00 100%);
+            border-radius: 50% 50% 20% 20%;
+            animation: flicker 0.3s infinite alternate;
+            box-shadow: 
+                0 0 40px 15px rgba(255, 100, 0, 0.7),
+                0 0 80px 30px rgba(255, 80, 0, 0.4),
+                0 0 120px 40px rgba(255, 60, 0, 0.2);
+            z-index: 5;
+        }
+        
+        .flame-inner {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 40px;
+            background: linear-gradient(to top, rgba(255, 255, 200, 0) 0%, #ffffc8 60%, #ffffff 100%);
+            border-radius: 50% 50% 20% 20%;
+            animation: flicker-inner 0.2s infinite alternate;
+            z-index: 6;
+        }
+        
+        .light-effect {
+            position: absolute;
+            top: -200px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 150, 50, 0.15) 0%, rgba(255, 100, 0, 0.05) 40%, transparent 70%);
+            border-radius: 50%;
+            z-index: 2;
+            animation: light-pulse 4s infinite alternate;
+        }
+        
+        .wax-drip {
+            position: absolute;
+            background: linear-gradient(to bottom, #d4a76a 0%, #b5834f 100%);
+            border-radius: 0 0 10px 10px;
+            box-shadow: inset 0 5px 10px rgba(139, 69, 19, 0.3);
+        }
+        
+        .drip-1 {
+            width: 20px;
+            height: 40px;
+            left: 5px;
+            bottom: 0;
+        }
+        
+        .drip-2 {
+            width: 15px;
+            height: 60px;
+            right: 8px;
+            bottom: -10px;
+        }
+        
+        .drip-3 {
+            width: 25px;
+            height: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -5px;
+        }
+        
+        .description {
+            max-width: 800px;
+            margin: 40px auto;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            padding: 20px;
+            background-color: rgba(17, 17, 34, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        footer {
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.9rem;
+            color: #888;
+            border-top: 1px solid rgba(255, 204, 136, 0.1);
+            width: 100%;
+        }
+        
+        @keyframes flicker {
+            0%, 100% {
+                transform: translateX(-50%) scale(1, 1);
+                border-radius: 50% 50% 20% 20%;
+            }
+            25% {
+                transform: translateX(-50%) scale(1.05, 0.95);
+                border-radius: 45% 55% 25% 25%;
+            }
+            50% {
+                transform: translateX(-50%) scale(0.95, 1.05);
+                border-radius: 55% 45% 15% 15%;
+            }
+            75% {
+                transform: translateX(-50%) scale(1.03, 0.97);
+                border-radius: 48% 52% 22% 22%;
+            }
+        }
+        
+        @keyframes flicker-inner {
+            0%, 100% {
+                transform: translateX(-50%) scale(1, 1);
+            }
+            50% {
+                transform: translateX(-50%) scale(1.1, 0.9);
+            }
+        }
+        
+        @keyframes light-pulse {
+            0%, 100% {
+                opacity: 0.7;
+                transform: translateX(-50%) scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: translateX(-50%) scale(1.1);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .scene-container {
+                height: 500px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .candle-container {
+                bottom: 80px;
+                width: 60px;
+                height: 250px;
+            }
+            
+            .candle-body {
+                width: 40px;
+                height: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .scene-container {
+                height: 400px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .candle-container {
+                bottom: 60px;
+                width: 50px;
+                height: 200px;
+            }
+            
+            .candle-body {
+                width: 35px;
+                height: 180px;
+            }
+            
+            .flame-container {
+                top: -35px;
+                width: 30px;
+                height: 60px;
+            }
+            
+            .flame {
+                width: 25px;
+                height: 55px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Flickering Candle</h1>
+            <p class="subtitle">A woman's silhouette illuminated by the gentle, dancing flame of a burning candle</p>
+        </header>
+        
+        <div class="scene-container">
+            <!-- Woman silhouette in the background -->
+            <div class="silhouette"></div>
+            
+            <!-- Candle light effect -->
+            <div class="light-effect"></div>
+            
+            <!-- Candle -->
+            <div class="candle-container">
+                <div class="candle">
+                    <div class="candle-body">
+                        <!-- Wax drips -->
+                        <div class="wax-drip drip-1"></div>
+                        <div class="wax-drip drip-2"></div>
+                        <div class="wax-drip drip-3"></div>
+                    </div>
+                    <div class="candle-wick"></div>
+                    <div class="flame-container">
+                        <div class="flame"></div>
+                        <div class="flame-inner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="description">
+            <p>This scene captures the tranquil atmosphere created by a single burning candle. The woman's silhouette in the background represents quiet contemplation, while the animated candle flame brings life to the composition with its natural, flickering motion.</p>
+            <p>The candle is rendered with realistic wax textures and drips, while the flame uses CSS animations to simulate the natural movement of fire. The warm glow illuminates the silhouette, creating a peaceful and introspective mood.</p>
+        </div>
+        
+        <footer>
+            <p>Created with HTML, CSS, and SVG | Animated Candle with Silhouette Scene</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const flame = document.querySelector('.flame');
+            const flameInner = document.querySelector('.flame-inner');
+            const candle = document.querySelector('.candle-container');
+            
+            // Make flame respond to mouse movement
+            document.addEventListener('mousemove', function(e) {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                // Slight movement of flame based on mouse position
+                flame.style.transform = `translateX(calc(-50% + ${(x - 0.5) * 10}px)) scale(${1 + (y - 0.5) * 0.05}, ${1 + (x - 0.5) * 0.05})`;
+                flameInner.style.transform = `translateX(calc(-50% + ${(x - 0.5) * 5}px)) scale(${1 + (y - 0.5) * 0.03}, ${1 + (x - 0.5) * 0.03})`;
+                
+                // Very subtle parallax effect on candle
+                candle.style.transform = `translateX(calc(-50% + ${(x - 0.5) * 5}px))`;
+            });
+            
+            // Add some random flame intensity variation
+            setInterval(() => {
+                const randomScale = 0.9 + Math.random() * 0.2;
+                flame.style.boxShadow = 
+                    `0 0 ${40 * randomScale}px ${15 * randomScale}px rgba(255, 100, 0, ${0.5 + randomScale * 0.2}),
+                     0 0 ${80 * randomScale}px ${30 * randomScale}px rgba(255, 80, 0, ${0.3 + randomScale * 0.1}),
+                     0 0 ${120 * randomScale}px ${40 * randomScale}px rgba(255, 60, 0, ${0.1 + randomScale * 0.1})`;
+            }, 300);
+        });
+    </script>
+</body>
+</html>
